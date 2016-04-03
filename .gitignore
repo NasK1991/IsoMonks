@@ -3,7 +3,6 @@
 # =============== #
 Temp/
 Library/
-Assets/elements/Scenes/
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
@@ -37,3 +36,5 @@ Thumbs.db
 # ===========#
 IsoTextures/
 IsoDecoration/
+Assets/Example.unity
+Assets/Example.unity.meta

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c453d041690ab642b6e517807c4ef31, type: 3}
   m_Name: IsoTexture
   m_EditorClassIdentifier: 
-  realTexture: {fileID: 2800000, guid: d9a6a83f21b82ed43b4bdd4e6bba18dd, type: 3}
+  realTexture: {fileID: 0}
   xCorner: 0
   yCorner: 0
   isXSimetric: 0

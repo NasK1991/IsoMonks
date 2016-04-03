@@ -43,7 +43,7 @@ public class GameEvent : ScriptableObject, JSONAble{
 
 		this.keys = new List<string> (args.Keys);
 		this.values = new List<Object> (args.Values);
-	}
+    }
 
 	public void removeParameter(string param){
 		param = param.ToLower();
@@ -194,13 +194,14 @@ public class GameEvent : ScriptableObject, JSONAble{
             {
                 var jsonAble = entry.Value as JSONAble;
                 parameters.AddField(entry.Key, JSONSerializer.Serialize(jsonAble));
+                //Debug.Log(entry.Value);
             }
             else
             {
                 parameters.AddField(entry.Key, entry.Value.GetInstanceID());
+                //Debug.Log(entry.Value.GetInstanceID());
             }
         }
-
 
         json.AddField("parameters", parameters);
         return json;
@@ -218,7 +219,9 @@ public class GameEvent : ScriptableObject, JSONAble{
 
     public void fromJSONObject(JSONObject json)
     {
-        this.name = json["name"].ToString();
+        //quitar comillas dobles (se añaden solas en la conversion)
+        int len = json["name"].ToString().Length - 2;
+        this.name = json["name"].ToString().Substring(1, len);
 
         //Clean basic types
         destroyBasic(this.args);
@@ -228,6 +231,7 @@ public class GameEvent : ScriptableObject, JSONAble{
         JSONObject parameters = json["parameters"];
         foreach (string key in parameters.keys)
         {
+            //Debug.Log(parameters[key]); de parameters[key] saca el entity
             JSONObject param = parameters[key];
             JSONAble unserialized = JSONSerializer.UnSerialize(param);
             this.setParameter(key, unserialized);

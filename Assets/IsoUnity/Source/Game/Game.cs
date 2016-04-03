@@ -48,15 +48,21 @@ public class Game : MonoBehaviour {
 
         // Main Managers initialization
         // TODO Make they event managers as the rest
-		CameraManager.initialize();
+        CameraManager.initialize();
 		CameraManager.lookTo (look);
 		MapManager.getInstance().hideAllMaps();
 		MapManager.getInstance().setActiveMap(map);
 		ControllerManager.Enabled = true;
 		IsoSwitchesManager.getInstance().getIsoSwitches();
+        Connection.getInstance().Initialized();
+
+        //============================================
+        EntityMap.getInstance().Initialized();
+        EntityMap.getInstance().generateEntityMap(); //Se genera el Dictionary con <id,GameObject>
+        //============================================
 
         // Event Managers Creation
-		eventManagers = new List<EventManager> ();
+        eventManagers = new List<EventManager> ();
 		foreach(string manager in managers){
 			eventManagers.Add (ScriptableObject.CreateInstance(manager) as EventManager);
 		}
@@ -82,8 +88,18 @@ public class Game : MonoBehaviour {
 	public void enqueueEvent(GameEvent ge){
 		if(ge == null)
 			return;
-		this.events.Enqueue(ge);
-	}
+
+        ge = Connection.getInstance().getResultEvent(ge);
+        foreach(string contenido_param in ge.Params){
+            if (EntityMap.getInstance().getEntityMap().ContainsKey((int)ge.getParameter(contenido_param))){
+                UnityEngine.Object go_src;
+                EntityMap.getInstance().getEntityMap().TryGetValue((int)ge.getParameter(contenido_param), out go_src);
+                ge.setParameter(contenido_param, go_src);
+            }
+        }
+        
+        this.events.Enqueue(ge);
+    }
     
 	public void eventFinished(GameEvent ge){
 		object sync = ge.getParameter("synchronous");

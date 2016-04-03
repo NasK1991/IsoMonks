@@ -58,11 +58,10 @@ public class Player : EntityScript {
 						ge.setParameter("distance", args.options[0].Distance);
 						ge.Name = "move";
 						movement = ge;
-						Game.main.enqueueEvent(ge);	
-
+						Game.main.enqueueEvent(ge);
                         // Here we've launched the movement. As it's synchronous, we'll receive 
                         // the movement finished when the Mover considers it's done.
-					}
+                    }
 
 					toLaunch = args.options[0].Action;
 				}
@@ -79,8 +78,8 @@ public class Player : EntityScript {
 				ge.setParameter("entity", this.Entity);
 				ge.setParameter("cell", args.cell);
 				ge.Name = "move";
-				Game.main.enqueueEvent(ge);			
-			}
+				Game.main.enqueueEvent(ge);
+            }
             // Otherwise, the controller event should contain keys pressed
             else {
 		
@@ -96,7 +95,8 @@ public class Player : EntityScript {
 					Cell destination = Entity.Position.Map.getNeightbours(Entity.Position)[to];
                     // Can move to checks if the entity can DIRECT move to this cells.
                     // This should solve bug #29
-                    if (this.Entity.canMoveTo(destination)) {
+                    Mover em = this.Entity.GetComponent<Mover>();
+                    if (em != null && em.CanMoveTo(destination)) {
                         GameEvent ge = ScriptableObject.CreateInstance<GameEvent>();
                         ge.setParameter("entity", this.Entity);
                         ge.setParameter("cell", destination);
