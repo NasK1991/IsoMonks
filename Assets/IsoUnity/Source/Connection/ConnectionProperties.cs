@@ -8,7 +8,7 @@ public class ConnectionProperties {
     private IPEndPoint sender;
 
     public ConnectionProperties() {
-        string IP = "127.1.0.1";
+        string IP = "127.0.0.1";
         int exitPort = 9876;
         int enterPort = 9877;
 
