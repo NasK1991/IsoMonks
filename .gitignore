@@ -37,5 +37,5 @@ Thumbs.db
 #IsoTextures/
 #IsoDecoration/
 ProjectSettings/
-Assets/Example.unity
-Assets/Example.unity.meta
+Assets/Scenes/
+Assets/Scenes.meta
