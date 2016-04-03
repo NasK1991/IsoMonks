@@ -32,9 +32,10 @@ ehthumbs.db
 Thumbs.db
 
 # ========== #
-#  ISO UNITY #
+#    NASK    #
 # ===========#
 #IsoTextures/
 #IsoDecoration/
+ProjectSettings/
 Assets/Example.unity
 Assets/Example.unity.meta
