@@ -183,21 +183,16 @@ public class GameEvent : ScriptableObject, JSONAble{
     /// JSon serialization things
     /// </summary>
 
-    public JSONObject toJSONObject()
-    {
+    public JSONObject toJSONObject() {
         JSONObject json = new JSONObject();
         json.AddField("name", name);
         JSONObject parameters = new JSONObject();
-        foreach (KeyValuePair<string, Object> entry in args)
-        {
-            if (entry.Value is JSONAble)
-            {
+        foreach (KeyValuePair<string, Object> entry in args) {
+            if (entry.Value is JSONAble) {
                 var jsonAble = entry.Value as JSONAble;
-                parameters.AddField(entry.Key, JSONSerializer.Serialize(jsonAble));
                 //Debug.Log(entry.Value);
-            }
-            else
-            {
+                parameters.AddField(entry.Key, JSONSerializer.Serialize(jsonAble));
+            } else {
                 parameters.AddField(entry.Key, entry.Value.GetInstanceID());
                 //Debug.Log(entry.Value.GetInstanceID());
             }

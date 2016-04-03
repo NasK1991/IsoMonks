@@ -14,15 +14,13 @@ public class ConnectionImp : Connection {
     }
 
     public override GameEvent getResultEvent(GameEvent ge) {
-        GameEvent empty = ScriptableObject.CreateInstance<GameEvent>();
         sendEvent(ge);
-        GameEvent resultGe = ReceivedEvent();               
-        //Debug.Log(ge.toJSONObject().ToString());
-        //Debug.Log(resultGe.toJSONObject().ToString());
-        return (resultGe == empty) ? ge : resultGe;
+        GameEvent resultGe = ReceivedEvent();
+        return resultGe;
     }
 
     private void sendEvent(GameEvent ge) {
+        //showGameEventStructure(ge);
         data = Encoding.ASCII.GetBytes(ge.toJSONObject().ToString());
         cp.getSocketClient().Send(data, data.Length);
     }
@@ -36,7 +34,21 @@ public class ConnectionImp : Connection {
             string dataSocket = Encoding.ASCII.GetString(data, 0, data.Length);
             ge.fromJSONObject(new JSONObject(dataSocket));
         }
-        catch ( Exception e ) { /*Debug.Log(e.Message);*/ }
+        catch ( Exception e ) { Debug.Log(e.Message); }
         return ge;
+    }
+
+    private void showGameEventStructure(GameEvent ge) {
+        Debug.Log(ge.toJSONObject().ToString());
+        String GameEvent = ge.name + "(";
+
+        foreach (String p in ge.Params) {
+            GameEvent += p + ", ";
+        }
+        GameEvent = GameEvent.Substring(0, GameEvent.Length - 2);
+        GameEvent += ")";
+
+        GameEvent += ")";
+        Debug.Log(GameEvent);
     }
 }
