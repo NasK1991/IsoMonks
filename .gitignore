@@ -34,7 +34,7 @@ Thumbs.db
 # ========== #
 #  ISO UNITY #
 # ===========#
-IsoTextures/
-IsoDecoration/
+#IsoTextures/
+#IsoDecoration/
 Assets/Example.unity
 Assets/Example.unity.meta
