@@ -89,7 +89,7 @@ public class Game : MonoBehaviour {
 		if(ge == null)
 			return;
 
-        ge = parseEvent(Connection.getInstance().getResultEvent(ge));
+        //ge = parseEvent(Connection.getInstance().getResultEvent(ge));
 
         this.events.Enqueue(ge);
     }
@@ -168,20 +168,22 @@ public class Game : MonoBehaviour {
 		}
 
         // Events launch
-		while(events.Count > 0) {
-			GameEvent ge = events.Dequeue();
+        while (events.Count > 0) {
+            GameEvent ge = events.Dequeue();
 			broadcastEvent(ge);
 		}
 
+        events.Enqueue(parseEvent(Connection.getInstance().getResultEvent(null)));
+
         // EventManagers ticks
-		foreach(EventManager manager in eventManagers)
-			manager.Tick();
+        foreach (EventManager manager in eventManagers) {
+            manager.Tick();
+        }
 
         // Entities ticks
-		foreach(Map eachMap in MapManager.getInstance().getMapList())
-		{
+		foreach(Map eachMap in MapManager.getInstance().getMapList()) {
             eachMap.tick();
 		}
-	}
+    }
 
 }

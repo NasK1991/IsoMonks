@@ -14,7 +14,7 @@ public class ConnectionImp : Connection {
     }
 
     public override GameEvent getResultEvent(GameEvent ge) {
-        sendEvent(ge);
+        if (ge != null) { sendEvent(ge); }
         GameEvent resultGe = ReceivedEvent();
         return resultGe;
     }
@@ -30,11 +30,11 @@ public class ConnectionImp : Connection {
         GameEvent ge = ScriptableObject.CreateInstance<GameEvent>();
         #pragma warning disable 0168
         try {
-            data = cp.getSocketServer().Receive(ref sender); 
+            data = cp.getSocketServer().Receive(ref sender);
             string dataSocket = Encoding.ASCII.GetString(data, 0, data.Length);
             ge.fromJSONObject(new JSONObject(dataSocket));
         }
-        catch ( Exception e ) { Debug.Log(e.Message); }
+        catch ( Exception e ) { /*Debug.Log(e.Message);*/ }
         return ge;
     }
 

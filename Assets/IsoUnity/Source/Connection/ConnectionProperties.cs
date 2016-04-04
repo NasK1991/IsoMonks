@@ -14,6 +14,7 @@ public class ConnectionProperties {
 
         socketClient = new UdpClient(IP, exitPort);
         socketServer = new UdpClient(new IPEndPoint(IPAddress.Any, enterPort));
+        socketServer.Client.ReceiveTimeout = 100;
         sender = new IPEndPoint(IPAddress.Any, exitPort);
     }
 
