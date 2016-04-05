@@ -9,5 +9,6 @@
     }
 
     public abstract void Initialized();
-    public abstract GameEvent getResultEvent(GameEvent ge);
+    public abstract void sendEvent(object ev);
+    public abstract GameEvent ReceivedEvent();
 }

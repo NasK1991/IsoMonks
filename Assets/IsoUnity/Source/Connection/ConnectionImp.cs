@@ -13,19 +13,20 @@ public class ConnectionImp : Connection {
         data = new byte[1024];
     }
 
-    public override GameEvent getResultEvent(GameEvent ge) {
-        if (ge != null) { sendEvent(ge); }
-        GameEvent resultGe = ReceivedEvent();
-        return resultGe;
-    }
+    public override void sendEvent(object ev) {
+        String info = "";
+        if (ev.GetType() == typeof(System.String)) {
+            info = (String)ev;
+        } else if (ev.GetType() == typeof(GameEvent)) {
+            //showGameEventStructure(ev);
+            info = ((GameEvent)ev).toJSONObject().ToString();
+        }
 
-    private void sendEvent(GameEvent ge) {
-        //showGameEventStructure(ge);
-        data = Encoding.ASCII.GetBytes(ge.toJSONObject().ToString());
+        data = Encoding.ASCII.GetBytes(info);
         cp.getSocketClient().Send(data, data.Length);
     }
 
-    private GameEvent ReceivedEvent() {
+    public override GameEvent ReceivedEvent() {
         IPEndPoint sender = cp.getSender();
         GameEvent ge = ScriptableObject.CreateInstance<GameEvent>();
         #pragma warning disable 0168

@@ -89,7 +89,8 @@ public class Game : MonoBehaviour {
 		if(ge == null)
 			return;
 
-        //ge = parseEvent(Connection.getInstance().getResultEvent(ge));
+        Connection.getInstance().sendEvent(ge);
+        ge = parseEvent(Connection.getInstance().ReceivedEvent());
 
         this.events.Enqueue(ge);
     }
@@ -172,8 +173,6 @@ public class Game : MonoBehaviour {
             GameEvent ge = events.Dequeue();
 			broadcastEvent(ge);
 		}
-
-        events.Enqueue(parseEvent(Connection.getInstance().getResultEvent(null)));
 
         // EventManagers ticks
         foreach (EventManager manager in eventManagers) {

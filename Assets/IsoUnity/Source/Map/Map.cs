@@ -563,12 +563,13 @@ public class Map : MonoBehaviour, ISerializationCallbackReceiver
 
 	public void tick(){
 
-		if (removed > 0 || toAdd.Count > 0)
-			UpdateEntities ();
+        if (removed > 0 || toAdd.Count > 0) {
+            UpdateEntities();
+        }
 
-		foreach (Entity e in this.entities)
-			e.tick ();
-
+        foreach (Entity e in this.entities) {
+            e.tick();
+        }
 	}
 
 	/***************

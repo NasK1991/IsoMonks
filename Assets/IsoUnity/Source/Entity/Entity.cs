@@ -80,7 +80,9 @@ public class Entity : MonoBehaviour {
 			mover.normalSprite = normalSprite;
 			mover.jumpingSprite = jumpingSprite;
 		}
-	}
+
+        Connection.getInstance().sendEvent(this.GetInstanceID().ToString());
+    }
 
     [SerializeField]
     Transform my_transform;
