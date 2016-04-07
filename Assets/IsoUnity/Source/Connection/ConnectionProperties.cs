@@ -11,7 +11,7 @@ public class ConnectionProperties {
         string IP = "127.0.0.1";
         int exitPort = 9876;
         int enterPort = 9877;
-        int ttl = 250;
+        int ttl = 10;
 
         socketClient = new UdpClient(IP, exitPort);
         socketServer = new UdpClient(new IPEndPoint(IPAddress.Any, enterPort));

@@ -90,39 +90,9 @@ public class Game : MonoBehaviour {
 			return;
 
         Connection.getInstance().sendEvent(ge);
-        ge = parseEvent(Connection.getInstance().ReceivedEvent());
+        ge = Connection.getInstance().ReceivedEvent();
 
         this.events.Enqueue(ge);
-    }
-
-    private GameEvent parseEvent(GameEvent ge) {
-        foreach (string contenido_param in ge.Params) {
-            object param = ge.getParameter(contenido_param);
-            if (contenido_param.Equals("direction")) {
-                Mover.Direction t = new Mover.Direction();
-                switch ((System.String)param) {
-                    case "North": ge.setParameter(contenido_param, t); break;
-                    case "East": ge.setParameter(contenido_param, t + 1); break;
-                    case "South": ge.setParameter(contenido_param, t + 2); break;
-                    case "West": ge.setParameter(contenido_param, t + 3); break;
-                }
-            } else {
-                if (param.GetType() == typeof(System.Int32)) {
-                    int intParam = (int)param;
-                    if (EntityMap.getInstance().getEntityMap().ContainsKey(intParam)) {
-                        UnityEngine.Object go_src;
-                        EntityMap.getInstance().getEntityMap().TryGetValue(intParam, out go_src);
-                        ge.setParameter(contenido_param, go_src);
-                    }
-                } else {
-                    Debug.Log("====================================");
-                    Debug.Log("tipo: " + param.GetType() + ", valor: " + param);
-                    Debug.Log("====================================");
-                }
-            }
-        }
-        
-        return ge;
     }
     
 	public void eventFinished(GameEvent ge){
@@ -167,6 +137,9 @@ public class Game : MonoBehaviour {
 			ControllerManager.tick();
 			currentTimeToController-=timeToController;
 		}
+
+        //Eventos llegados por el socket
+        this.events.Enqueue(Connection.getInstance().ReceivedEvent());
 
         // Events launch
         while (events.Count > 0) {

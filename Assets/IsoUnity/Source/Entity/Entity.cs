@@ -81,7 +81,8 @@ public class Entity : MonoBehaviour {
 			mover.jumpingSprite = jumpingSprite;
 		}
 
-        Connection.getInstance().sendEvent(this.GetInstanceID().ToString());
+        string json = "{\"name\":\"info\",\"parameters\":{\"entity\":" + this.GetInstanceID().ToString() +"}}";
+        Connection.getInstance().sendEvent(json);
     }
 
     [SerializeField]
