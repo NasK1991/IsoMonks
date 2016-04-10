@@ -4,12 +4,17 @@ using System.Collections;
 
 [ExecuteInEditMode]
 public class Decoration : MonoBehaviour{
-	/*******************************
+    /*******************************
 	 * BEGIN ATRIBS
 	 *******************************/
 
-	// The cell face that is asigned to
-	[SerializeField]
+    /// <summary>
+    /// Used to know if you can be blocked in paths
+    /// </summary>
+    public string decorationName;
+
+    // The cell face that is asigned to
+    [SerializeField]
 	private IsoDecoration isoDec;
 
 	public IsoDecoration IsoDec {
@@ -62,10 +67,20 @@ public class Decoration : MonoBehaviour{
 	 * END ATRIBS
 	 * *********************/
 
-	public Decoration (){
-	}
+	public Decoration (){}
 
-	public void setParameters(Vector3 center, int angle, bool parallel, bool centered){
+    // Use this for initialization
+    void Start() {
+        if (Application.isPlaying) {
+            if (this.decorationName != "") {
+                string commandName = "registerDecoration";
+                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"decorationName\":" + this.decorationName + ", \"decoration\":" + this.GetInstanceID().ToString() + "}}";
+                Connection.getInstance().sendEvent(json);
+            }
+        }
+    }
+
+    public void setParameters(Vector3 center, int angle, bool parallel, bool centered){
 		this.center = center;
 		this.angle = angle;
 		this.parallel = parallel;
