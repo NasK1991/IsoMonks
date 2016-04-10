@@ -519,15 +519,15 @@ public class Cell : MonoBehaviour, ISerializationCallbackReceiver
             if (!Application.isPlaying) {
                 if (this.Map != null) {
                     this.Map.registerCell(this);
-                }
-
-                string commandName = "registerCell";
-                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"cell\":" + this.GetInstanceID().ToString() + "}}";
-                Connection.getInstance().sendEvent(json);
+                }        
             }
         #endif
-
         
+        if (Application.isPlaying) {
+            string commandName = "registerCell";
+            string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"cell\":" + this.GetInstanceID().ToString() + "}}";
+            Connection.getInstance().sendEvent(json);
+        }
     }
 
 	void Update () {
