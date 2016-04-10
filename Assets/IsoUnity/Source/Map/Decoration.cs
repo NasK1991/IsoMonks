@@ -9,7 +9,7 @@ public class Decoration : MonoBehaviour{
 	 *******************************/
 
     /// <summary>
-    /// Used to know if you can be blocked in paths
+    /// Used to know Decoration Name
     /// </summary>
     public string decorationName;
 
@@ -74,7 +74,10 @@ public class Decoration : MonoBehaviour{
         if (Application.isPlaying) {
             if (this.decorationName != "") {
                 string commandName = "registerDecoration";
-                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"decorationName\":" + this.decorationName + ", \"decoration\":" + this.GetInstanceID().ToString() + "}}";
+                this.Father.GetInstanceID();
+                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"decorationName\":\"" 
+                    + this.decorationName + "\", \"decoration\":" + this.GetInstanceID().ToString() 
+                    + ",\"cell\":" + this.Father.GetInstanceID().ToString() + "}}";
                 Connection.getInstance().sendEvent(json);
             }
         }

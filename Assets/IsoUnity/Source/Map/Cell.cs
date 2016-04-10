@@ -13,10 +13,12 @@ public enum CellTopOrientation {
 };
 
 [ExecuteInEditMode]
-public class Cell : MonoBehaviour, ISerializationCallbackReceiver
-{
+public class Cell : MonoBehaviour, ISerializationCallbackReceiver {
 
-	/**
+    
+	
+
+    /**
 	 * Ser De
 	 */
 
@@ -33,8 +35,9 @@ public class Cell : MonoBehaviour, ISerializationCallbackReceiver
 
 	[SerializeField]
 	private bool walkable = true;
-	[SerializeField]
-	private float walkingHeight;
+    public string CellDescription;
+    [SerializeField]
+    private float walkingHeight;
     [SerializeField]
     private CellProperties properties;
 
@@ -260,7 +263,7 @@ public class Cell : MonoBehaviour, ISerializationCallbackReceiver
 		set{ this.walkable = value;}
 	}
 
-	public float Height {
+    public float Height {
 		get {
             return properties.height;
 		}
@@ -524,9 +527,11 @@ public class Cell : MonoBehaviour, ISerializationCallbackReceiver
         #endif
         
         if (Application.isPlaying) {
-            string commandName = "registerCell";
-            string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"cell\":" + this.GetInstanceID().ToString() + "}}";
-            Connection.getInstance().sendEvent(json);
+            if (this.CellDescription != "") {
+                string commandName = "registerCell";
+                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"cellDescription\":" + this.CellDescription + ",\"cell\":" + this.GetInstanceID().ToString() + "}}";
+                Connection.getInstance().sendEvent(json);
+            }
         }
     }
 
