@@ -515,14 +515,20 @@ public class Cell : MonoBehaviour, ISerializationCallbackReceiver
 
 	// Use this for initialization
 	void Start () {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-        {
-            if (this.Map != null)
-                this.Map.registerCell(this);
-        }
-#endif
-	}
+        #if UNITY_EDITOR
+            if (!Application.isPlaying) {
+                if (this.Map != null) {
+                    this.Map.registerCell(this);
+                }
+
+                string commandName = "registerCell";
+                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"cell\":" + this.GetInstanceID().ToString() + "}}";
+                Connection.getInstance().sendEvent(json);
+            }
+        #endif
+
+        
+    }
 
 	void Update () {
         if (this.properties.Changed)

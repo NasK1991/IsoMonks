@@ -31,8 +31,12 @@ public class Entity : MonoBehaviour {
     /// Face used for dialogs
     /// </summary>
 	public Texture2D face;
+    /// <summary>
+    /// ASL Agent's name
+    /// </summary>
+	public string entityName;
 
-	[SerializeField]
+    [SerializeField]
 	private Cell position;
 	public Cell Position {
 		get{
@@ -71,18 +75,20 @@ public class Entity : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(Application.isPlaying){
-			Mover mover = this.gameObject.AddComponent<Mover>();
-			mover.canBlockMe = canBlockMe;
-			mover.blocks = blocks;
-			mover.maxJumpSize = maxJumpSize;
-			mover.direction = direction;
-			mover.normalSprite = normalSprite;
-			mover.jumpingSprite = jumpingSprite;
-		}
+        if (Application.isPlaying) {
+            Mover mover = this.gameObject.AddComponent<Mover>();
+            mover.canBlockMe = canBlockMe;
+            mover.blocks = blocks;
+            mover.maxJumpSize = maxJumpSize;
+            mover.direction = direction;
+            mover.normalSprite = normalSprite;
+            mover.jumpingSprite = jumpingSprite;
 
-        string json = "{\"name\":\"info\",\"parameters\":{\"entity\":" + this.GetInstanceID().ToString() +"}}";
-        Connection.getInstance().sendEvent(json);
+            string commandName = "registerEntity";
+            string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"entityName\":" + this.entityName
+                + ",\"entity\":" + this.GetInstanceID().ToString() + "}}";
+            Connection.getInstance().sendEvent(json);
+        }
     }
 
     [SerializeField]
