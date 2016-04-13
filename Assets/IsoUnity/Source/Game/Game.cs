@@ -59,6 +59,7 @@ public class Game : MonoBehaviour {
         //============================================
         EntityMap.getInstance().Initialized();
         EntityMap.getInstance().generateEntityMap(); //Se genera el Dictionary con <id,GameObject>
+        this.sendEnvironment();
         //============================================
 
         // Event Managers Creation
@@ -71,9 +72,48 @@ public class Game : MonoBehaviour {
         // TODO move this to GUI Manager as it becomes a regular EventManager
 		if(this.onScreenControls)
 			GUIManager.addGUI(new OnScreenControlsGUI(), 99);
-	}
-	
-	void Update () {
+
+    }
+
+    private void sendEnvironment() {
+        // ===========================
+        // CAMBIAR ESTRUCTURA
+        // environment tiene decorations (array) y entities (array)
+        // ambas tienen id, name, cell
+        // ===========================
+        string jsonMap = "{\"name\":\"environment\",\"parameters\":{";
+        foreach (Map mapi in MapManager.getInstance().getMapList()) {
+            jsonMap += "\"cells\":[";
+            foreach (Cell cell in mapi.GetComponentsInChildren<Cell>()) {
+                if (cell.GetComponentsInChildren<Entity>().Length > 0) {
+                    jsonMap += "{\"id\":" + cell.GetInstanceID().ToString() + ",\"entities\":[";
+                    foreach (Entity entity in cell.GetComponentsInChildren<Entity>()) {
+                        jsonMap += "{\"id\":" + entity.GetInstanceID().ToString();
+                        jsonMap += ",\"name\":\"" + entity.entityName + "\"";
+                        jsonMap += "},";
+                    }
+                    jsonMap = jsonMap.TrimEnd(',');
+                    jsonMap += "]},";
+                } else if (cell.GetComponentsInChildren<Decoration>().Length > 0) {
+                    jsonMap += "{\"id\":" + cell.GetInstanceID().ToString() + ",\"decorations\":[";
+                    foreach (Decoration decoration in cell.GetComponentsInChildren<Decoration>()) {
+                        jsonMap += "{\"id\":" + decoration.GetInstanceID().ToString();
+                        jsonMap += ",\"name\":\"" + decoration.decorationName + "\"";
+                        jsonMap += "},";
+                    }
+                    jsonMap = jsonMap.TrimEnd(',');
+                    jsonMap += "]},";
+                }
+            }
+            jsonMap = jsonMap.TrimEnd(',');
+            jsonMap += "],";
+        }
+        jsonMap = jsonMap.TrimEnd(',');
+        jsonMap += "}}";
+        Connection.getInstance().sendEvent(jsonMap);
+    }
+
+    void Update () {
 		this.tick();
 	}
 

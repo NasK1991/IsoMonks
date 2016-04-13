@@ -69,20 +69,6 @@ public class Decoration : MonoBehaviour{
 
 	public Decoration (){}
 
-    // Use this for initialization
-    void Start() {
-        if (Application.isPlaying) {
-            if (this.decorationName != "") {
-                string commandName = "registerDecoration";
-                this.Father.GetInstanceID();
-                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"decorationName\":\"" 
-                    + this.decorationName + "\", \"decoration\":" + this.GetInstanceID().ToString() 
-                    + ",\"cell\":" + this.Father.GetInstanceID().ToString() + "}}";
-                Connection.getInstance().sendEvent(json);
-            }
-        }
-    }
-
     public void setParameters(Vector3 center, int angle, bool parallel, bool centered){
 		this.center = center;
 		this.angle = angle;

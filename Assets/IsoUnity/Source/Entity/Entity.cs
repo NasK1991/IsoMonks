@@ -83,13 +83,6 @@ public class Entity : MonoBehaviour {
             mover.direction = direction;
             mover.normalSprite = normalSprite;
             mover.jumpingSprite = jumpingSprite;
-
-            if (this.entityName != "") {
-                string commandName = "registerEntity";
-                string json = "{\"name\":\"" + commandName + "\",\"parameters\":{\"entityName\":" + this.entityName
-                    + ",\"entity\":" + this.GetInstanceID().ToString() + "}}";
-                Connection.getInstance().sendEvent(json);
-            }
         }
     }
 
