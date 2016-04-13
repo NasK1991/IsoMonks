@@ -59,7 +59,7 @@ public class Game : MonoBehaviour {
         //============================================
         EntityMap.getInstance().Initialized();
         EntityMap.getInstance().generateEntityMap(); //Se genera el Dictionary con <id,GameObject>
-        this.sendEnvironment();
+        this.sendEnvironment(true);
         //============================================
 
         // Event Managers Creation
@@ -75,42 +75,36 @@ public class Game : MonoBehaviour {
 
     }
 
-    private void sendEnvironment() {
-        // ===========================
-        // CAMBIAR ESTRUCTURA
-        // environment tiene decorations (array) y entities (array)
-        // ambas tienen id, name, cell
-        // ===========================
+    /*
+     * Send environment to socket
+     */
+    private void sendEnvironment( bool send ) {
         string jsonMap = "{\"name\":\"environment\",\"parameters\":{";
         foreach (Map mapi in MapManager.getInstance().getMapList()) {
-            jsonMap += "\"cells\":[";
+            string entities = "", decorations = "";
             foreach (Cell cell in mapi.GetComponentsInChildren<Cell>()) {
                 if (cell.GetComponentsInChildren<Entity>().Length > 0) {
-                    jsonMap += "{\"id\":" + cell.GetInstanceID().ToString() + ",\"entities\":[";
                     foreach (Entity entity in cell.GetComponentsInChildren<Entity>()) {
-                        jsonMap += "{\"id\":" + entity.GetInstanceID().ToString();
-                        jsonMap += ",\"name\":\"" + entity.entityName + "\"";
-                        jsonMap += "},";
+                        entities += "{\"id\":" + entity.GetInstanceID().ToString();
+                        if (entity.entityName == "") { }
+                        entities += ",\"name\":\"" + ((entity.entityName == "") ? "<nothing>" : entity.entityName) + "\"";
+                        entities += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
+                        entities += "},";
                     }
-                    jsonMap = jsonMap.TrimEnd(',');
-                    jsonMap += "]},";
                 } else if (cell.GetComponentsInChildren<Decoration>().Length > 0) {
-                    jsonMap += "{\"id\":" + cell.GetInstanceID().ToString() + ",\"decorations\":[";
                     foreach (Decoration decoration in cell.GetComponentsInChildren<Decoration>()) {
-                        jsonMap += "{\"id\":" + decoration.GetInstanceID().ToString();
-                        jsonMap += ",\"name\":\"" + decoration.decorationName + "\"";
-                        jsonMap += "},";
+                        decorations += "{\"id\":" + decoration.GetInstanceID().ToString();
+                        decorations += ",\"name\":\"" + ((decoration.decorationName == "") ? "<nothing>" : decoration.decorationName) + "\"";
+                        decorations += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
+                        decorations += "},";
                     }
-                    jsonMap = jsonMap.TrimEnd(',');
-                    jsonMap += "]},";
                 }
             }
-            jsonMap = jsonMap.TrimEnd(',');
-            jsonMap += "],";
+            jsonMap += "\"entities\":[" + entities.TrimEnd(',') + "],";
+            jsonMap += "\"decorations\":[" + decorations.TrimEnd(',') + "]";
         }
-        jsonMap = jsonMap.TrimEnd(',');
         jsonMap += "}}";
-        Connection.getInstance().sendEvent(jsonMap);
+        if (send) { Connection.getInstance().sendEvent(jsonMap); } else { Debug.Log(jsonMap); }
     }
 
     void Update () {
