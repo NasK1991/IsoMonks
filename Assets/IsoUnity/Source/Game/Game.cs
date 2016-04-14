@@ -124,7 +124,8 @@ public class Game : MonoBehaviour {
 			return;
 
         Connection.getInstance().sendEvent(ge);
-        ge = Connection.getInstance().ReceivedEvent();
+        GameEvent result = Connection.getInstance().ReceivedEvent();
+        ge = (result.Name == "")? ge : result;
 
         this.events.Enqueue(ge);
     }
