@@ -104,7 +104,7 @@ public class Game : MonoBehaviour {
             jsonMap += "\"decorations\":[" + decorations.TrimEnd(',') + "]";
         }
         jsonMap += "}}";
-        if (send) { Connection.getInstance().sendEvent(jsonMap); } else { Debug.Log(jsonMap); }
+        Connection.getInstance().sendEvent(send, jsonMap);
     }
 
     void Update () {
@@ -118,12 +118,11 @@ public class Game : MonoBehaviour {
     /*
      * Event methods
      */
-
 	public void enqueueEvent(GameEvent ge){
 		if(ge == null)
 			return;
 
-        Connection.getInstance().sendEvent(ge);
+        Connection.getInstance().sendEvent(true, ge);
         GameEvent result = Connection.getInstance().ReceivedEvent();
         ge = (result.Name == "")? ge : result;
 

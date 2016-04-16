@@ -13,7 +13,7 @@ public class ConnectionImp : Connection {
         data = new byte[1024];
     }
 
-    public override void sendEvent(object ev) {
+    public override void sendEvent(bool send, object ev) {
         String info = "";
         if (ev.GetType() == typeof(System.String)) {
             info = (String)ev;
@@ -22,8 +22,10 @@ public class ConnectionImp : Connection {
             info = ((GameEvent)ev).toJSONObject().ToString();
         }
 
-        data = Encoding.ASCII.GetBytes(info);
-        cp.getSocketClient().Send(data, data.Length);
+        if (send) {
+            data = Encoding.ASCII.GetBytes(info);
+            cp.getSocketClient().Send(data, data.Length);
+        } else { Debug.Log(info); }
     }
 
     public override GameEvent ReceivedEvent() {
