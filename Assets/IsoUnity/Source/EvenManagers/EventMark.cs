@@ -10,7 +10,7 @@ public class EventMark : MonoBehaviour {
 	void Update () {}
 
     void OnCollisionEnter(Collision collisionInfo) {
-        string json = "{\"name\":\"event\",\"parameters\":{\"eventName\":\"tocar(campana)\"}}";
+        string json = "{\"name\":\"event\",\"parameters\":{\"eventName\":\"tocar_campana\"}}";
         Connection.getInstance().sendEvent(true, json);
         //Debug.Log("Detected collision between " + gameObject.name + " and " + collisionInfo.collider.name);
         //Debug.Log("There are " + collisionInfo.contacts.Length + " point(s) of contacts");
