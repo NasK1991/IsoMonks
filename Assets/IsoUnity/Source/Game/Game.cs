@@ -86,15 +86,14 @@ public class Game : MonoBehaviour {
                 if (cell.GetComponentsInChildren<Entity>().Length > 0) {
                     foreach (Entity entity in cell.GetComponentsInChildren<Entity>()) {
                         entities += "{\"id\":" + entity.GetInstanceID().ToString();
-                        if (entity.entityName == "") { }
-                        entities += ",\"name\":\"" + ((entity.entityName == "") ? "<nothing>" : entity.entityName) + "\"";
+                        entities += ",\"name\":\"" + ((entity.entityName == "") ? "<entity_without_name>" : entity.entityName) + "\"";
                         entities += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
                         entities += "},";
                     }
                 } else if (cell.GetComponentsInChildren<Decoration>().Length > 0) {
                     foreach (Decoration decoration in cell.GetComponentsInChildren<Decoration>()) {
                         decorations += "{\"id\":" + decoration.GetInstanceID().ToString();
-                        decorations += ",\"name\":\"" + ((decoration.decorationName == "") ? "<nothing>" : decoration.decorationName) + "\"";
+                        decorations += ",\"name\":\"" + ((decoration.decorationName == "") ? "<decoration_without_name>" : decoration.decorationName) + "\"";
                         decorations += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
                         decorations += "},";
                     }
@@ -122,6 +121,7 @@ public class Game : MonoBehaviour {
 		if(ge == null)
 			return;
 
+        //Debug.Log(ge.toJSONObject().ToString());
         Connection.getInstance().sendEvent(true, ge);
         GameEvent result = Connection.getInstance().ReceivedEvent();
         ge = (result.Name == "")? ge : result;
