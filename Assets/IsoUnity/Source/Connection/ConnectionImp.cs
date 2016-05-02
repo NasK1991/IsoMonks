@@ -38,7 +38,9 @@ public class ConnectionImp : Connection {
             ge.fromJSONObject(new JSONObject(dataSocket));
         }
         catch ( Exception e ) { /*Debug.Log(e.Message);*/ }
-        return parseEvent(ge);
+        GameEvent p = parseEvent(ge);
+        //if (p.Name == "action") { Debug.Log(p.toJSONObject().ToString()); }
+        return p;
     }
 
     /* --- HERRAMIENTAS --- */
@@ -76,11 +78,11 @@ public class ConnectionImp : Connection {
                         EntityMap.getInstance().getEntityMap().TryGetValue(intParam, out go_src);
                         ge.setParameter(contenido_param, go_src);
                     }
-                } else {
+                }/* else {
                     Debug.Log("====================================");
                     Debug.Log("tipo: " + param.GetType() + ", valor: " + param);
                     Debug.Log("====================================");
-                }
+                }*/
             }
         }
 

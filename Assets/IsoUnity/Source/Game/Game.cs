@@ -123,10 +123,14 @@ public class Game : MonoBehaviour {
 
         //Debug.Log(ge.toJSONObject().ToString());
         Connection.getInstance().sendEvent(true, ge);
-        GameEvent result = Connection.getInstance().ReceivedEvent();
-        ge = (result.Name == "")? ge : result;
+        //GameEvent result = Connection.getInstance().ReceivedEvent();
+        //ge = (result.Name == "") ? ge : result;
 
         this.events.Enqueue(ge);
+    }
+
+    private void actionEvent(GameEvent ge) {
+        ((EventMark) ge.getParameter("cell")).responseEvent(ge.getParameter("actionName").ToString());
     }
     
 	public void eventFinished(GameEvent ge){
@@ -173,7 +177,12 @@ public class Game : MonoBehaviour {
 		}
 
         //Eventos llegados por el socket
-        this.events.Enqueue(Connection.getInstance().ReceivedEvent());
+        GameEvent temp = Connection.getInstance().ReceivedEvent();
+        if (temp.Name == "action") {
+            actionEvent(temp);
+        } else {
+            this.events.Enqueue(temp);
+        }
 
         // Events launch
         while (events.Count > 0) {
