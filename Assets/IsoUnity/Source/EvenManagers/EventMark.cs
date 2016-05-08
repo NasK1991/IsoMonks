@@ -21,7 +21,8 @@ public class EventMark : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collisionInfo) {
-        string json = "{\"name\":\"event\",\"parameters\":{\"cell\":" + this.GetInstanceID() + ",\"eventName\":\"" + this.sendEvent + "\"}}";
+        string who = collisionInfo.gameObject.GetComponentInParent<Entity>().entityName;
+        string json = "{\"name\":\"event\",\"parameters\":{\"cell\":" + this.GetInstanceID() + ",\"eventName\":\"" + this.sendEvent + "\",\"who\":\"" + who + "\"}}";
         Connection.getInstance().sendEvent(true, json);
         //Debug.Log("Detected collision between " + gameObject.name + " and " + collisionInfo.collider.name);
         //Debug.Log("There are " + collisionInfo.contacts.Length + " point(s) of contacts");
