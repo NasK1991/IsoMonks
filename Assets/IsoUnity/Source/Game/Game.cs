@@ -85,17 +85,21 @@ public class Game : MonoBehaviour {
             foreach (Cell cell in mapi.GetComponentsInChildren<Cell>()) {
                 if (cell.GetComponentsInChildren<Entity>().Length > 0) {
                     foreach (Entity entity in cell.GetComponentsInChildren<Entity>()) {
-                        entities += "{\"id\":" + entity.GetInstanceID().ToString();
-                        entities += ",\"name\":\"" + ((entity.entityName == "") ? "<entity_without_name>" : entity.entityName) + "\"";
-                        entities += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
-                        entities += "},";
+                        if (entity.entityName != "") {
+                            entities += "{\"id\":" + entity.GetInstanceID().ToString();
+                            entities += ",\"name\":\"" + entity.entityName + "\"";
+                            entities += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
+                            entities += "},";
+                        }
                     }
                 } else if (cell.GetComponentsInChildren<Decoration>().Length > 0) {
                     foreach (Decoration decoration in cell.GetComponentsInChildren<Decoration>()) {
-                        decorations += "{\"id\":" + decoration.GetInstanceID().ToString();
-                        decorations += ",\"name\":\"" + ((decoration.decorationName == "") ? "<decoration_without_name>" : decoration.decorationName) + "\"";
-                        decorations += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
-                        decorations += "},";
+                        if (decoration.decorationName != "") {
+                            decorations += "{\"id\":" + decoration.GetInstanceID().ToString();
+                            decorations += ",\"name\":\"" + decoration.decorationName + "\"";
+                            decorations += ",\"cell\":" + cell.GetInstanceID().ToString() + "";
+                            decorations += "},";
+                        }
                     }
                 }
             }
@@ -179,7 +183,7 @@ public class Game : MonoBehaviour {
         //Eventos llegados por el socket
         GameEvent temp = Connection.getInstance().ReceivedEvent();
         if (temp.Name == "action") {
-            actionEvent(temp);
+            this.actionEvent(temp);
         } else {
             this.events.Enqueue(temp);
         }

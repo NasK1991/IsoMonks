@@ -3,6 +3,8 @@ using System.Collections;
 
 public class EventMark : MonoBehaviour {
 
+    public string sendEvent = "";
+
 	// Use this for initialization
 	void Start () {}
 	
@@ -19,7 +21,7 @@ public class EventMark : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collisionInfo) {
-        string json = "{\"name\":\"event\",\"parameters\":{\"cell\":" + this.GetInstanceID() + ",\"eventName\":\"campana_cerca\"}}";
+        string json = "{\"name\":\"event\",\"parameters\":{\"cell\":" + this.GetInstanceID() + ",\"eventName\":\"" + this.sendEvent + "\"}}";
         Connection.getInstance().sendEvent(true, json);
         //Debug.Log("Detected collision between " + gameObject.name + " and " + collisionInfo.collider.name);
         //Debug.Log("There are " + collisionInfo.contacts.Length + " point(s) of contacts");
